@@ -71,6 +71,17 @@ body {
 body:not([data-dunya="kagit"]) .ust .sekme { opacity: 0; transform: translateY(-8px); pointer-events: none; }
 .ust a:hover { text-decoration: underline; text-underline-offset: 4px; }
 body[data-dunya="devre"] .ust a { color: var(--kagit); }
+
+/* ses aç/kapa düğmesi: 9x9 piksel simge */
+.ses {
+  display: inline-grid; place-items: center; width: 44px; height: 44px; padding: 0; border: 0;
+  background: none; cursor: pointer; color: var(--baslik); opacity: .7; transition: opacity .2s, color .4s;
+}
+.ses:hover, .ses:focus-visible { opacity: 1; }
+.ses[aria-pressed="true"] .ses-carpi, .ses[aria-pressed="false"] .ses-dalga { display: none; }
+body[data-dunya="devre"] .ses { color: var(--kagit); }
+body[data-dunya="piksel"] .ses { color: var(--o-kivilcim); }
+body[data-dunya="karanlik"] .ses { color: var(--kagit-golge); }
 body[data-dunya="piksel"] .ust { background: rgba(30, 26, 42, .82); }
 /* Silkscreen yalnız büyük harf çiziyor; Türkçe büyük harfe çevir (lang="tr" ile i → İ) */
 body[data-dunya="piksel"] .ust a, .ust-etiket, .pano h3, .pano dt, #oyun h2, .piksel-dugme, .dunya-baslik { text-transform: uppercase; }
@@ -166,6 +177,7 @@ html.kilitli, html.kilitli body { overflow: hidden; overscroll-behavior: none; }
 
 /* hareket istemeyenler için: geçiş yok, içerik doğrudan */
 html.sade #dunya { display: none; }
+html.sade .ses { display: none; }
 
 /* yazılar sayfası */
 .yazilar { max-width: 760px; margin: 0 auto; padding: 130px 16px 64px; }

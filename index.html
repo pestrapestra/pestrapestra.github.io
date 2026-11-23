@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Pixelify+Sans:wght@400;600&family=Silkscreen&family=Special+Elite&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/site.css?v=4">
+<link rel="stylesheet" href="css/site.css?v=5">
 </head>
 <body data-dunya="kagit">
 <a class="atla" href="#oyun">İçeriğe geç</a>
@@ -21,6 +21,13 @@
   <div class="baglantilar">
     <a href="#oyun">Oyun</a>
     <a href="#foto">Fotoğraf</a>
+    <button class="ses" type="button" aria-pressed="true" aria-label="Ses" title="Ses: açık">
+      <svg viewBox="0 0 9 9" width="18" height="18" fill="currentColor" shape-rendering="crispEdges" aria-hidden="true">
+        <rect x="0" y="3" width="2" height="3"/><rect x="2" y="2" width="1" height="5"/><rect x="3" y="1" width="1" height="7"/>
+        <g class="ses-dalga"><rect x="5" y="3" width="1" height="3"/><rect x="6" y="1" width="1" height="1"/><rect x="7" y="2" width="1" height="5"/><rect x="6" y="7" width="1" height="1"/></g>
+        <g class="ses-carpi"><rect x="5" y="3" width="1" height="1"/><rect x="7" y="3" width="1" height="1"/><rect x="6" y="4" width="1" height="1"/><rect x="5" y="5" width="1" height="1"/><rect x="7" y="5" width="1" height="1"/></g>
+      </svg>
+    </button>
   </div>
 </nav>
 
@@ -70,6 +77,10 @@
         <linearGradient id="g-kafa" x1="0" y1="0" x2="0" y2="1">
           <stop offset="0" stop-color="#d4d7da"/><stop offset=".5" stop-color="#8f9499"/><stop offset="1" stop-color="#5a5f64"/>
         </linearGradient>
+        <clipPath id="ekran-kirp"><rect x="212" y="392" width="176" height="110"/></clipPath>
+        <mask id="pb-maske" maskUnits="userSpaceOnUse" x="212" y="392" width="176" height="110">
+          <text x="300" y="454" text-anchor="middle" font-family="Silkscreen, monospace" font-size="22" fill="#fff">PESTRABOY</text>
+        </mask>
       </defs>
       <rect id="kart-zemin" x="-3000" y="-3000" width="6600" height="7000" fill="#13322B" opacity="0"/>
       <g id="sahne-g">
@@ -153,8 +164,18 @@
         <rect x="96" y="352" width="408" height="200" rx="46" fill="#3D4A38" stroke="#26301f" stroke-width="3"/>
         <rect x="104" y="358" width="392" height="12" rx="6" fill="#4F5F35" opacity=".6"/>
         <rect x="200" y="382" width="200" height="140" rx="8" fill="#E3D6BC"/>
-        <rect id="ekran" x="212" y="392" width="176" height="110" fill="#b9c98f"/>
-        <text id="ekran-yazi" x="300" y="452" text-anchor="middle" font-family="Silkscreen, monospace" font-size="17" fill="#13322B">▶ BAŞLA</text>
+        <rect id="ekran" x="212" y="392" width="176" height="110" fill="#0f0d15"/>
+        <g id="ekran-ic" clip-path="url(#ekran-kirp)">
+          <rect id="ekran-isik" x="212" y="392" width="176" height="110" fill="#1e1a2a" opacity="0"/>
+          <g id="pb-logo" transform="translate(0 -66)" opacity="0">
+            <text x="300" y="456" text-anchor="middle" font-family="Silkscreen, monospace" font-size="22" fill="#f07a2e">PESTRABOY</text>
+            <text id="pb-yazi" x="300" y="454" text-anchor="middle" font-family="Silkscreen, monospace" font-size="22" fill="#ffc94a">PESTRABOY</text>
+          </g>
+          <g mask="url(#pb-maske)">
+            <path id="pb-parilti" d="M0 432 h16 l-10 28 h-16 Z" fill="#fff1b0" opacity="0" transform="translate(196 0)"/>
+          </g>
+          <path d="M212 392 h58 l-34 110 h-24 Z" fill="#ffffff" opacity=".05"/>
+        </g>
         <text x="300" y="540" text-anchor="middle" font-family="Silkscreen, monospace" font-size="9" fill="#D9CCB2">CEP · 01</text>
         <rect x="139" y="428" width="18" height="54" rx="3" fill="#1f1e1c"/>
         <rect x="121" y="446" width="54" height="18" rx="3" fill="#1f1e1c"/>
@@ -347,7 +368,7 @@
 </section>
 </main>
 
-<script src="js/gecis.js?v=4"></script>
-<script src="js/foto.js?v=4"></script>
+<script src="js/gecis.js?v=5"></script>
+<script src="js/foto.js?v=5"></script>
 </body>
 </html>

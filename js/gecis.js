@@ -160,7 +160,10 @@
   var ipucu = document.getElementById('ipucu');
   var cep = document.getElementById('cep');
   var ekran = document.getElementById('ekran');
-  var ekranYazi = document.getElementById('ekran-yazi');
+  var ekranIsik = document.getElementById('ekran-isik');
+  var pbLogo = document.getElementById('pb-logo');
+  var pbYazi = document.getElementById('pb-yazi');
+  var pbParilti = document.getElementById('pb-parilti');
   var dunya = document.getElementById('dunya');
   var dunyaBaslik = document.querySelector('#dunya .dunya-baslik');
   var yazi = document.querySelector('.kagit-yazi');
@@ -207,6 +210,64 @@
       // satır sonu: kâğıt bir satır yukarı kayar (satır başı kolu)
       setTimeout(function () { if (!yazildi) kagitHedef -= LH; setTimeout(yaz, 190); }, 120);
     } else setTimeout(yaz, 34 + Math.random() * 44 + (harf === ',' ? 60 : 0));   // satır ortasındaki virgülden sonra kısa duraklama
+  }
+
+  // ---------- ses: Web Audio ile üretilen iki notalı çan (dosya yok) ----------
+  // Bağlam sayfa açılışında kurulmaz; ilk etkileşimde (ses açıksa) kurulur.
+  var sesAcik = true;
+  try { sesAcik = localStorage.getItem('melih-ses') !== '0'; } catch (hata) { sesAcik = true; }
+  var AC = window.AudioContext || window.webkitAudioContext;
+  var ctx = null, ana = null;
+  window.__sesGunluk = [];   // doğrulama için: çalınan notaların başlangıç zamanları
+  function sesKur() {
+    if (!sesAcik || !AC) return;
+    if (!ctx) {
+      try { ctx = new AC(); ana = ctx.createGain(); ana.gain.value = 0.16; ana.connect(ctx.destination); }
+      catch (hata) { ctx = null; ana = null; return; }
+    }
+    if (ctx.state === 'suspended') { try { var r = ctx.resume(); if (r && r.catch) r.catch(function () {}); } catch (hata) {} }
+  }
+  ['pointerdown', 'keydown', 'touchend'].forEach(function (ad) {
+    window.addEventListener(ad, sesKur, { capture: true, passive: true });
+  });
+  function zarf(param, b, tepe, sonum) {
+    param.setValueAtTime(0.0001, b);
+    param.exponentialRampToValueAtTime(tepe, b + 0.005);
+    param.exponentialRampToValueAtTime(0.0001, b + sonum);
+  }
+  function nota(f, b, tepe, sonum) {
+    var o = ctx.createOscillator(), g = ctx.createGain();
+    o.type = 'triangle'; o.frequency.value = f;
+    zarf(g.gain, b, tepe, sonum);
+    o.connect(g); g.connect(ana); o.start(b); o.stop(b + sonum + 0.02);
+    var o2 = ctx.createOscillator(), g2 = ctx.createGain(), s2 = sonum * 0.4;   // çan kısmisi
+    o2.type = 'sine'; o2.frequency.value = f * 2.756;
+    zarf(g2.gain, b, tepe * 0.25, s2);
+    o2.connect(g2); g2.connect(ana); o2.start(b); o2.stop(b + s2 + 0.02);
+    window.__sesGunluk.push({ f: f, b: b, zaman: performance.now() });
+  }
+  function canCal() {
+    if (!sesAcik || !ctx || ctx.state !== 'running') return;
+    var now = ctx.currentTime, t0 = now + 0.01;
+    ana.gain.cancelScheduledValues(now);
+    ana.gain.setValueAtTime(0.16, now);
+    nota(880.00, t0, 0.7, 0.14);        // "di": A5
+    nota(1174.66, t0 + 0.085, 1.0, 0.90);   // "ding": D6
+  }
+  var sesDugme = document.querySelector('.ses');
+  if (sesDugme) {
+    var sesGuncelle = function () {
+      sesDugme.setAttribute('aria-pressed', sesAcik ? 'true' : 'false');
+      sesDugme.setAttribute('title', sesAcik ? 'Ses: açık' : 'Ses: kapalı');
+    };
+    sesGuncelle();
+    sesDugme.addEventListener('click', function () {
+      sesAcik = !sesAcik;
+      try { localStorage.setItem('melih-ses', sesAcik ? '1' : '0'); } catch (hata) {}
+      sesGuncelle();
+      if (sesAcik) sesKur();
+      else if (ctx && ana) ana.gain.setTargetAtTime(0, ctx.currentTime, 0.02);   // çalan ses yumuşakça söner
+    });
   }
 
   // ---------- çizim: p (0..1) geçişin neresinde olduğumuzu söyler ----------
@@ -271,7 +332,16 @@
 
     // 4) cep konsolu
     cep.setAttribute('opacity', yum(ara(p, 0.4, 0.49)));
-    ekranYazi.setAttribute('opacity', (zaman % 1000) < 650 ? 1 : 0.25);
+    // 4b) PESTRABOY açılışı: ekran titreyerek yanar, yazı üstten sabit hızla iner, oturur, parlama geçer
+    ekranIsik.setAttribute('opacity', p < 0.49 ? 0 : p < 0.5 ? 0.7 : p < 0.51 ? 0.2 : 1);
+    pbLogo.setAttribute('opacity', p >= 0.51 ? 1 : 0);
+    var dy = Math.round(-66 * (1 - ara(p, 0.52, 0.70)));
+    if (p >= 0.7 && p < 0.706) dy = 1;   // oturma: bir birim aşağı esneme, sonra yerine
+    pbLogo.setAttribute('transform', 'translate(0 ' + dy + ')');
+    pbYazi.setAttribute('fill', p >= 0.7 && p < 0.725 ? '#fff1b0' : '#ffc94a');   // çarpma parlaması
+    var w = ara(p, 0.71, 0.79);
+    pbParilti.setAttribute('transform', 'translate(' + lerp(196, 414, w).toFixed(1) + ' 0)');
+    pbParilti.setAttribute('opacity', w > 0 && w < 1 ? 0.85 : 0);
 
     // 5) piksel dünyası ekrandan taşar
     var gor = ara(p, 0.8, 0.83);
@@ -363,6 +433,7 @@
   function kare(zaman) {
     var dt = onceki ? Math.min(0.05, (zaman - onceki) / 1000) : 0;
     onceki = zaman;
+    var pvOnce = pv, durumOnce = durum;
     if (durum === 'ileri' || durum === 'geri') {
       var u = animSure > 0 ? kis((zaman - animBas) / animSure) : 1;
       pv = lerp(animDen, animHedef, u);
@@ -371,6 +442,7 @@
         else { durum = 'bekle'; kilitle(false); }
       }
     }
+    if (durumOnce === 'ileri' && pvOnce < 0.7 && pv >= 0.7) canCal();   // yalnız ileri geçişte, ekran yazısı oturduğu an
     kagitY += (kagitHedef - kagitY) * (1 - Math.exp(-14 * dt));
     ipucuA += ((yazildi ? 1 : 0) - ipucuA) * (1 - Math.exp(-3 * dt));
     if (!sade && window.scrollY < window.innerHeight * 1.2) ciz(pv, zaman);
