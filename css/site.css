@@ -22,7 +22,8 @@
 * { box-sizing: border-box; }
 html, body { margin: 0; }
 body {
-  background: var(--kagit);
+  /* döşenebilir doku: 1600 px görsel 800 px'e oturur, yüksek yoğunluklu ekranda da keskin */
+  background: var(--kagit) url(../gorseller/kagit-yeni.webp) 0 0 / 800px repeat;
   color: var(--metin);
   font-family: 'Courier Prime', monospace;
   font-size: 17px;
@@ -65,7 +66,7 @@ body[data-dunya="piksel"] .ust a {
 #giris { position: relative; height: 520vh; }
 .sahne {
   position: sticky; top: 0; height: 100vh; height: 100svh; overflow: hidden;
-  background: var(--kagit) url(../gorseller/kagit.webp) center / cover;
+  background: var(--kagit) url(../gorseller/kagit-yeni.webp) 0 0 / 800px repeat;
 }
 .kagit-yazi {
   position: absolute; left: 50%; top: 13vh; z-index: 2;
