@@ -132,7 +132,8 @@ html.kilitli, html.kilitli body { overflow: hidden; overscroll-behavior: none; }
 
 /* oyun bölümü */
 #oyun {
-  background: var(--o-toprak-koyu); color: var(--o-kemik);
+  /* son 160 px'te toprak rengi fotoğraf bölümünün siyahına iner: vizör sert kenarla gelmez */
+  background: linear-gradient(to bottom, #3e2a1c calc(100% - 160px), #0b0a09 100%); color: var(--o-kemik);
   font-family: 'Pixelify Sans', monospace; font-size: 19px;
   padding: 0 0 96px;
 }
@@ -198,7 +199,7 @@ html.sade .ses { display: none; }
 
 /* ---------- fotoğraf: vizör → analog makine → makine seçimi ---------- */
 body[data-dunya="karanlik"] .ust a { color: var(--kagit-golge); }
-#foto { position: relative; height: 340vh; background: #0b0a09; }
+#foto { position: relative; height: 330vh; background: #0b0a09; }
 .foto-sahne {
   position: sticky; top: 0; height: 100vh; height: 100svh; overflow: hidden;
   --kagit-o: 0; --son-o: 0; --galeri-o: 0;

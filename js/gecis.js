@@ -472,6 +472,7 @@
     if (hash && hash !== giris && !sade) {
       anindaBitir(); olc();
       window.scrollTo(0, hash === foto && window.fotoSonY ? window.fotoSonY() : hash.offsetTop);
+      if (hash === foto && window.fotoEsitle) window.fotoEsitle();   // vizör sahnesi bir kare bile görünmesin
     } else {
       window.scrollTo(0, hash && sade ? hash.offsetTop : 0);
       if (!sade) setTimeout(yaz, 400);
