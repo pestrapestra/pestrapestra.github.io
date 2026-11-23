@@ -1,0 +1,150 @@
+:root {
+  --kagit: #F5EAD5;
+  --kagit-golge: #D9CCB2;
+  --baslik: #40312F;      /* Coffee Bean */
+  --metin: #483F39;       /* Turkish Coffee */
+  --damga: #4A342E;       /* Chicory Coffee */
+  --orman: #13322B;       /* Pantone 627 C */
+  --kokNar: #36492E;      /* Douglas Fir */
+  --woodland: #3D4A38;    /* IWC Woodland (yaklaşık) */
+  --soluk: #76675B;
+
+  /* oyun paleti */
+  --o-kontur: #0b0a12;
+  --o-gece: #1e1a2a;
+  --o-toprak-koyu: #3e2a1c;
+  --o-kemik: #f4f1e8;
+  --o-turuncu: #f07a2e;
+  --o-altin: #ffc94a;
+  --o-kivilcim: #fff1b0;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body {
+  background: var(--kagit);
+  color: var(--metin);
+  font-family: 'Courier Prime', monospace;
+  font-size: 17px;
+  line-height: 1.7;
+}
+
+.gizli {
+  position: absolute; width: 1px; height: 1px; overflow: hidden;
+  clip: rect(0 0 0 0); white-space: nowrap;
+}
+.atla {
+  position: absolute; left: 16px; top: -60px; z-index: 50;
+  background: var(--orman); color: var(--kagit); padding: 10px 14px;
+}
+.atla:focus { top: 8px; }
+:focus-visible { outline: 3px solid var(--kokNar); outline-offset: 3px; }
+
+/* üst menü */
+.ust {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 20;
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 6px 16px; transition: background .4s, color .4s;
+}
+.ust a {
+  display: inline-flex; align-items: center; min-height: 44px; padding: 0 10px;
+  color: var(--baslik); text-decoration: none;
+  font-family: 'Special Elite', monospace; font-size: 18px;
+}
+.ust .ad { font-size: 22px; padding-left: 0; }
+.ust a:hover { text-decoration: underline; text-underline-offset: 4px; }
+body[data-dunya="devre"] .ust a { color: var(--kagit); }
+body[data-dunya="piksel"] .ust { background: rgba(30, 26, 42, .82); }
+/* Silkscreen yalnız büyük harf çiziyor; Türkçe büyük harfe çevir (lang="tr" ile i → İ) */
+body[data-dunya="piksel"] .ust a, .ust-etiket, .pano h3, .pano dt, #oyun h2, .piksel-dugme, .dunya-baslik { text-transform: uppercase; }
+body[data-dunya="piksel"] .ust a {
+  font-family: 'Silkscreen', monospace; font-size: 14px; color: var(--o-kivilcim);
+}
+
+/* giriş */
+#giris { position: relative; height: 520vh; }
+.sahne {
+  position: sticky; top: 0; height: 100vh; height: 100svh; overflow: hidden;
+  background: var(--kagit) url(../gorseller/kagit.webp) center / cover;
+}
+.kagit-yazi {
+  position: absolute; left: 50%; top: 13vh; z-index: 2;
+  width: min(520px, 86vw); transform: translateX(-50%);
+  font-family: 'Special Elite', monospace; color: var(--baslik);
+  font-size: clamp(20px, 3vw, 28px); line-height: 1.55;
+}
+.kagit-yazi p { margin: 0; min-height: 1.55em; }
+.kagit-yazi .imza { padding-left: 45%; }
+.imlec::after {
+  content: ''; display: inline-block; width: .55em; height: 2px; margin-left: 2px;
+  background: currentColor; vertical-align: -2px; animation: yanip 1s steps(1) infinite;
+}
+@keyframes yanip { 50% { opacity: 0; } }
+
+.makine { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; z-index: 1; }
+.makine-btn {
+  position: absolute; left: 0; right: 0; bottom: 0; height: 36%; z-index: 3;
+  background: none; border: 0; cursor: pointer;
+}
+
+#dunya {
+  position: absolute; inset: 0; z-index: 4; opacity: 0; pointer-events: none;
+  clip-path: inset(50% 50% 50% 50%);
+}
+#dunya canvas, .sade-manzara {
+  display: block; width: 100%; height: 100%; object-fit: cover; image-rendering: pixelated;
+}
+.dunya-baslik {
+  position: absolute; left: 0; right: 0; bottom: 10vh; margin: 0; text-align: center;
+  font-family: 'Silkscreen', monospace; font-size: clamp(32px, 7vw, 64px);
+  color: var(--o-kivilcim); text-shadow: 4px 4px 0 var(--o-kontur); opacity: 0;
+}
+
+/* oyun bölümü */
+#oyun {
+  background: var(--o-toprak-koyu); color: var(--o-kemik);
+  font-family: 'Pixelify Sans', monospace; font-size: 19px;
+  padding: 72px 16px 96px;
+}
+.sade-manzara { display: none; }
+.icerik { max-width: 880px; margin: 0 auto; }
+#oyun h2 {
+  font-family: 'Silkscreen', monospace; font-weight: 400; font-size: 34px;
+  color: var(--o-altin); margin: 0 0 24px; text-shadow: 3px 3px 0 var(--o-kontur);
+}
+.pano {
+  background: var(--o-gece); border: 4px solid var(--o-kontur);
+  box-shadow: 6px 6px 0 var(--o-kontur); padding: 24px;
+}
+.ust-etiket { margin: 0; font-family: 'Silkscreen', monospace; font-size: 13px; color: var(--o-turuncu); }
+.pano h3 { font-family: 'Silkscreen', monospace; font-weight: 400; font-size: 26px; margin: 6px 0 12px; color: var(--o-kivilcim); }
+.pano h3 span { font-size: 15px; color: #a79fae; }
+.pano h3 .ad-en { font-size: inherit; color: inherit; }
+.pano dl { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin: 20px 0; }
+.pano dt { font-family: 'Silkscreen', monospace; font-size: 12px; color: #a79fae; }
+.pano dd { margin: 0; }
+.ekranlar { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; margin: 20px 0 24px; }
+.ekranlar div {
+  aspect-ratio: 16 / 9; display: grid; place-items: center;
+  border: 4px solid var(--o-kontur); color: #a79fae; font-size: 15px;
+  background: repeating-linear-gradient(45deg, #3b3346 0 8px, #2c2638 8px 16px);
+}
+.piksel-dugme {
+  display: inline-flex; align-items: center; min-height: 44px; padding: 0 18px;
+  background: var(--o-turuncu); color: var(--o-kontur); text-decoration: none;
+  font-family: 'Silkscreen', monospace; font-size: 14px;
+  border: 3px solid var(--o-kontur); box-shadow: 4px 4px 0 var(--o-kontur);
+}
+.piksel-dugme:active { transform: translate(2px, 2px); box-shadow: 2px 2px 0 var(--o-kontur); }
+
+/* dijital (taslak) */
+#dijital { padding: 96px 16px; min-height: 70vh; }
+#dijital h2 { font-family: 'Special Elite', monospace; font-weight: 400; color: var(--baslik); font-size: 34px; margin: 0 0 12px; }
+
+.alt { padding: 24px 16px 40px; text-align: center; color: var(--soluk); font-size: 14px; }
+
+/* hareket istemeyenler için: geçiş yok, içerik doğrudan */
+html.sade #giris { height: auto; }
+html.sade .sahne { position: relative; height: 100vh; }
+html.sade #dunya { display: none; }
+html.sade .sade-manzara { display: block; height: 40vh; margin: -72px -16px 48px; width: calc(100% + 32px); }

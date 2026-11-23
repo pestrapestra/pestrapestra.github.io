@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Melih · deneme</title>
+<meta name="description" content="Melih'in portfolyosu: oyun, dijital ve analog fotoğraf. Geçiş denemesi.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Pixelify+Sans:wght@400;600&family=Silkscreen&family=Special+Elite&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/site.css">
+</head>
+<body data-dunya="kagit">
+<a class="atla" href="#oyun">İçeriğe geç</a>
+
+<nav class="ust" aria-label="Ana menü">
+  <a class="ad" href="#giris">Melih</a>
+  <div class="baglantilar">
+    <a href="#oyun">Oyun</a>
+    <a href="#dijital">Fotoğraf</a>
+  </div>
+</nav>
+
+<main>
+<section id="giris" aria-label="Giriş">
+  <div class="sahne">
+    <div class="kagit-yazi">
+      <h1 class="gizli">Merhaba, ben Melih. Oyun yapıyorum, fotoğraf çekiyorum.</h1>
+      <p class="satir" aria-hidden="true">merhaba, ben melih.</p>
+      <p class="satir" aria-hidden="true">oyun yapıyorum,</p>
+      <p class="satir" aria-hidden="true">fotoğraf çekiyorum.</p>
+      <p class="satir imza" aria-hidden="true">-m</p>
+    </div>
+
+    <svg class="makine" viewBox="0 0 600 900" preserveAspectRatio="xMidYMax meet" aria-hidden="true">
+      <rect id="kart-zemin" x="-3000" y="-3000" width="6600" height="7000" fill="#13322B" opacity="0"/>
+      <g id="sahne-g">
+        <rect id="govde" x="-1200" y="574" width="3000" height="1600" fill="#1f1e1c"/>
+        <g id="kollar"></g>
+        <g id="akim" fill="none" stroke="#ffd98a" stroke-width="2" stroke-linecap="round" stroke-dasharray="6 80"></g>
+        <g id="viyalar"></g>
+        <g id="metal">
+          <rect x="-1200" y="560" width="3000" height="15" fill="#8b9095"/>
+          <g id="cetvel" stroke="#3a3c3f" stroke-width="1.2"></g>
+          <path d="M262 498 L284 575" stroke="#7d8186" stroke-width="6" stroke-linecap="round"/>
+          <path d="M338 498 L316 575" stroke="#7d8186" stroke-width="6" stroke-linecap="round"/>
+          <rect x="80" y="578" width="440" height="8" fill="#151413"/>
+          <rect x="80" y="586" width="440" height="8" fill="#a3241c"/>
+          <circle cx="92" cy="586" r="20" fill="#9aa0a6" stroke="#5b5f64" stroke-width="2"/>
+          <circle cx="92" cy="586" r="5" fill="#5b5f64"/>
+          <circle cx="508" cy="586" r="20" fill="#9aa0a6" stroke="#5b5f64" stroke-width="2"/>
+          <circle cx="508" cy="586" r="5" fill="#5b5f64"/>
+          <path d="M280 596 L320 596 L328 642 L272 642 Z" fill="#a7acb1" stroke="#5b5f64" stroke-width="1.5"/>
+        </g>
+        <g id="cip" opacity="0">
+          <g id="cip-bacak" fill="#c9c2b0"></g>
+          <rect x="266" y="591" width="68" height="68" rx="3" fill="#151515"/>
+          <circle cx="274" cy="599" r="2.5" fill="#3a3a3a"/>
+          <text x="300" y="630" text-anchor="middle" font-family="Silkscreen, monospace" font-size="8" fill="#8f8a80">MLH-01</text>
+        </g>
+        <text id="ipucu" x="300" y="470" text-anchor="middle" font-family="Courier Prime, monospace" font-size="15" fill="#76675B">↓ kaydır ya da daktiloya dokun</text>
+      </g>
+
+      <g id="cep" opacity="0">
+        <rect x="96" y="352" width="408" height="200" rx="46" fill="#3D4A38" stroke="#26301f" stroke-width="3"/>
+        <rect x="104" y="358" width="392" height="12" rx="6" fill="#4F5F35" opacity=".6"/>
+        <rect x="200" y="382" width="200" height="140" rx="8" fill="#E3D6BC"/>
+        <rect id="ekran" x="212" y="392" width="176" height="110" fill="#b9c98f"/>
+        <text id="ekran-yazi" x="300" y="452" text-anchor="middle" font-family="Silkscreen, monospace" font-size="17" fill="#13322B">▶ BAŞLA</text>
+        <text x="300" y="540" text-anchor="middle" font-family="Silkscreen, monospace" font-size="9" fill="#D9CCB2">CEP · 01</text>
+        <rect x="139" y="428" width="18" height="54" rx="3" fill="#1f1e1c"/>
+        <rect x="121" y="446" width="54" height="18" rx="3" fill="#1f1e1c"/>
+        <circle cx="440" cy="432" r="14" fill="#4A342E" stroke="#2a1d19" stroke-width="2"/>
+        <circle cx="462" cy="470" r="14" fill="#4A342E" stroke="#2a1d19" stroke-width="2"/>
+        <g fill="#26301f">
+          <circle cx="132" cy="508" r="2.5"/><circle cx="142" cy="508" r="2.5"/><circle cx="152" cy="508" r="2.5"/>
+          <circle cx="137" cy="517" r="2.5"/><circle cx="147" cy="517" r="2.5"/>
+        </g>
+        <rect x="424" y="508" width="44" height="8" rx="4" fill="#76675B"/>
+      </g>
+    </svg>
+
+    <button class="makine-btn" type="button" aria-label="Daktiloya dokun, oyun bölümüne geç"></button>
+
+    <div id="dunya" aria-hidden="true">
+      <canvas width="160" height="90"></canvas>
+      <p class="dunya-baslik">OYUN</p>
+    </div>
+  </div>
+</section>
+
+<section id="oyun" aria-labelledby="oyun-baslik">
+  <canvas class="sade-manzara" width="160" height="90" aria-hidden="true"></canvas>
+  <div class="icerik">
+    <h2 id="oyun-baslik">Oyun</h2>
+    <article class="pano">
+      <p class="ust-etiket">Proje 01 · devam ediyor</p>
+      <h3><span lang="en" class="ad-en">Pixel roguelike</span> <span>(çalışma adı)</span></h3>
+      <p>Türk mitolojisinden beslenen, mobil için tasarlanan piksel grafikli bir aksiyon oyunu. Bu metin yer tutucu; asıl tanıtım yazısı sonra.</p>
+      <dl>
+        <div><dt>Rolüm</dt><dd>Fikir, tasarım ve yönetim</dd></div>
+        <div><dt>Araçlar</dt><dd>Godot 4</dd></div>
+        <div><dt>Durum</dt><dd>Prototip, ilk bölüm</dd></div>
+      </dl>
+      <div class="ekranlar">
+        <div>ekran görüntüsü</div>
+        <div>kısa video</div>
+      </div>
+      <a class="piksel-dugme" href="#oyun">Oyunu dene · yakında</a>
+    </article>
+  </div>
+</section>
+
+<section id="dijital" aria-labelledby="dijital-baslik">
+  <div class="icerik">
+    <h2 id="dijital-baslik">Dijital fotoğraf</h2>
+    <p>Buraya dijital makine geçişi gelecek. Sonra analog fotoğraf, film makinesiyle.</p>
+  </div>
+</section>
+</main>
+
+<footer class="alt">
+  <p>Bu sayfa bir denemedir. Kahve henüz dökülmedi.</p>
+</footer>
+
+<script src="js/gecis.js"></script>
+</body>
+</html>
