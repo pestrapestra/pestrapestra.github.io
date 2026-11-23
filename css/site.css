@@ -53,6 +53,19 @@ body {
   font-family: 'Special Elite', monospace; font-size: 18px;
 }
 .ust .ad { font-size: 22px; padding-left: 0; }
+.ust { align-items: flex-start; }
+.ad-kutu { display: flex; flex-direction: column; align-items: flex-start; }
+/* adın altında asılı duran dosya sekmesi */
+.ust .sekme {
+  min-height: 36px; margin-top: -4px; padding: 0 12px;
+  font-family: 'Courier Prime', monospace; font-size: 14px; color: var(--damga);
+  background: rgba(217, 204, 178, .55); border: 1px solid var(--kagit-golge); border-top: 0;
+  border-radius: 0 0 6px 6px; box-shadow: 0 2px 0 rgba(64, 49, 47, .08);
+  transition: opacity .3s, transform .3s;
+}
+.ust .sekme:hover { background: rgba(217, 204, 178, .85); }
+/* sekme yalnız kâğıt dünyasında; devre ve piksel dünyasında çekilir */
+body:not([data-dunya="kagit"]) .ust .sekme { opacity: 0; transform: translateY(-8px); pointer-events: none; }
 .ust a:hover { text-decoration: underline; text-underline-offset: 4px; }
 body[data-dunya="devre"] .ust a { color: var(--kagit); }
 body[data-dunya="piksel"] .ust { background: rgba(30, 26, 42, .82); }
@@ -149,3 +162,20 @@ html.sade #giris { height: auto; }
 html.sade .sahne { position: relative; height: 100vh; }
 html.sade #dunya { display: none; }
 html.sade .sade-manzara { display: block; height: 40vh; margin: -72px -16px 48px; width: calc(100% + 32px); }
+
+/* yazılar sayfası */
+.yazilar { max-width: 760px; margin: 0 auto; padding: 130px 16px 64px; }
+.yazilar h1 { font-family: 'Special Elite', monospace; font-weight: 400; color: var(--baslik); font-size: clamp(34px, 6vw, 48px); margin: 0 0 4px; }
+.alt-baslik { margin: 0 0 40px; color: var(--soluk); }
+.yazi-listesi { list-style: none; margin: 0; padding: 0; border-top: 1px dashed var(--kagit-golge); }
+.yazi a {
+  display: grid; grid-template-columns: 1fr auto; gap: 2px 16px; padding: 16px 0;
+  border-bottom: 1px dashed var(--kagit-golge); color: var(--metin); text-decoration: none;
+}
+.yazi a:hover .yazi-baslik { text-decoration: underline; text-underline-offset: 4px; }
+.yazi-tur { grid-column: 1 / -1; font-size: 13px; color: var(--kokNar); text-transform: uppercase; letter-spacing: .08em; }
+.yazi-baslik { font-family: 'Special Elite', monospace; font-size: 22px; color: var(--baslik); }
+.yazi time { color: var(--soluk); font-size: 14px; align-self: end; }
+.yazi-listesi:not(:empty) + .bos { display: none; }
+.bos { color: var(--soluk); font-style: italic; }
+.alt a { color: var(--damga); }
