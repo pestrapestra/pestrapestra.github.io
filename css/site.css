@@ -320,3 +320,12 @@ body[data-dunya="karanlik"] .ust a { color: var(--kagit-golge); }
 html.sade #foto { height: auto; }
 html.sade .foto-sahne { position: relative; }
 html.sade .vizor { display: none; }
+
+/* fotoğraftan oyuna dönüş perdesi */
+.donus-perde {
+  position: fixed; inset: 0; z-index: 30; pointer-events: none;
+  background: #3e2a1c; transform: translateY(-100%); visibility: hidden;
+}
+.donus-perde::after { content: ''; position: absolute; left: 0; right: 0; bottom: -8px; height: 8px; background: #f07a2e; }
+html.sade .donus-perde { display: none; }
+html.sade .galeri { overscroll-behavior: auto; }

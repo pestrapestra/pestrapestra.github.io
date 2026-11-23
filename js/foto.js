@@ -17,6 +17,8 @@
   var cam = analog.querySelector('.vizor-cam');
   var galeri = document.getElementById('galeri');
   var ipucu = galeri.querySelector('.galeri-ipucu');
+  var Q_DON = 0.37;                     // vizörün tamamen söndüğü an
+  var yerlesti = false, donus = false; // yerlesti: vizör geçildi, vizör geri gelmez; donus: perdeli dönüş sürüyor
   var qHedef = 0, qg = 0, onceki = 0;   // qHedef: kaydırmadan gelen ham değer; qg: gösterilen, sönümlü değer
 
   // vizör camının makine çizimindeki yeri (viewBox 400 x 250)
@@ -79,18 +81,110 @@
     qHedef = qHesapla();
     var dt = onceki ? (zaman - onceki) / 1000 : 1;
     onceki = zaman;
+    if (!sade && !donus) {
+      if (qHedef >= Q_DON) yerlesti = true;
+      else if (yerlesti) donusBaslat();   // yedek: kaydırma çubuğuyla sürüklenerek vizör bölgesine inildi
+    }
     if (dt > 0.25 || !gorunur) qg = qHedef;
     else {
       qg += (qHedef - qg) * (1 - Math.exp(-7 * dt));
       if (Math.abs(qHedef - qg) < 0.0005) qg = qHedef;
     }
+    if (yerlesti && qg < Q_DON) qg = Q_DON;   // vizör hiçbir yoldan geri gelmez
     if (gorunur) ciz();
     requestAnimationFrame(kare);
   }
   requestAnimationFrame(kare);
   // menüden Fotoğraf ve adresle açılış: sönümsüz, vizör bir kare bile görünmesin
-  function esitle() { qHedef = qg = qHesapla(); ciz(); }
+  function esitle() { qHedef = qg = qHesapla(); yerlesti = !sade && qHedef >= Q_DON; ciz(); }
   window.fotoEsitle = esitle;
+
+  // ---------- fotoğraftan yukarı: oyun renginde perde iner, sayfa oyun içeriğine atlar, perde söner ----------
+  var perde = document.querySelector('.donus-perde');
+  var galeriKaydi = -1e9, negToplam = 0, negZaman = -1e9, dokunY = null, dokunGaleri = false;
+  galeri.addEventListener('scroll', function () { galeriKaydi = performance.now(); }, { passive: true });
+
+  function donusBaslat() {
+    if (donus || sade || !perde) return;
+    donus = true;
+    perde.style.transition = 'none';
+    perde.style.opacity = '1';
+    perde.style.transform = 'translateY(-100%)';
+    perde.style.visibility = 'visible';
+    void perde.offsetHeight;
+    perde.style.transition = 'transform 260ms cubic-bezier(.65,0,.35,1)';
+    perde.style.transform = 'translateY(0)';
+    setTimeout(function () {
+      // ekran tamamen örtük: sayfayı oyun içeriğine at, vizör sahnesini hiç göstermeden bırak
+      var ust = document.querySelector('.oyun-icerik').getBoundingClientRect().top + window.scrollY;
+      window.scrollTo(0, Math.min(ust, foto.offsetTop - window.innerHeight));
+      qHedef = qg = qHesapla();
+      yerlesti = false;
+      document.body.dataset.dunya = 'piksel';
+      ciz();
+    }, 260);
+    setTimeout(function () {
+      perde.style.transition = 'opacity 300ms cubic-bezier(0,0,.2,1)';
+      perde.style.opacity = '0';
+    }, 300);
+    setTimeout(function () {
+      perde.style.transition = 'none';
+      perde.style.visibility = 'hidden';
+      perde.style.opacity = '1';
+      perde.style.transform = 'translateY(-100%)';
+      donus = false; negToplam = 0;
+    }, 600);
+  }
+  function galeriIciKaydirmali(hedef) {
+    return !!(hedef && hedef.closest && hedef.closest('.galeri') && galeri.scrollTop > 0);
+  }
+
+  window.addEventListener('wheel', function (e) {
+    if (sade || e.ctrlKey) return;
+    if (donus) { e.preventDefault(); return; }
+    if (!yerlesti) return;
+    var dy = e.deltaY * (e.deltaMode === 1 ? 16 : e.deltaMode === 2 ? window.innerHeight : 1);
+    if (dy >= 0) return;
+    if (galeriIciKaydirmali(e.target)) return;   // galeri kendi kayar
+    e.preventDefault();
+    var simdi = performance.now();
+    if (simdi - galeriKaydi < 300) return;       // galeri tepeye vurduktan sonra süren atalet sayfayı fırlatmasın
+    if (simdi - negZaman > 300) negToplam = 0;
+    negZaman = simdi; negToplam += dy;
+    if (negToplam <= -20) { negToplam = 0; donusBaslat(); }
+  }, { passive: false });
+
+  window.addEventListener('touchstart', function (e) {
+    dokunY = e.touches[0].clientY;
+    dokunGaleri = galeriIciKaydirmali(e.target);
+  }, { passive: true });
+  window.addEventListener('touchmove', function (e) {
+    if (sade) return;
+    if (donus) { e.preventDefault(); return; }
+    if (!yerlesti || dokunY === null || dokunGaleri) return;
+    if (dokunY - e.touches[0].clientY <= -12) { e.preventDefault(); dokunY = null; donusBaslat(); }   // parmak aşağı: sayfa yukarı
+  }, { passive: false });
+
+  window.addEventListener('keydown', function (e) {
+    if (sade) return;
+    var bosluk = e.key === ' ' || e.key === 'Spacebar';
+    var yukari = e.key === 'ArrowUp' || e.key === 'PageUp' || e.key === 'Home' || (bosluk && e.shiftKey);
+    var asagi = (e.key === 'ArrowDown' || e.key === 'PageDown' || e.key === 'End' || bosluk) && !e.shiftKey;
+    if (donus && (yukari || asagi)) { e.preventDefault(); return; }
+    if (!yerlesti || !yukari) return;
+    var h = e.target;
+    if (h && h.closest && h.closest('input, textarea, select')) return;
+    if (bosluk && h && h.closest && h.closest('a, button')) return;
+    if (galeriIciKaydirmali(h)) return;
+    e.preventDefault(); donusBaslat();
+  });
+
+  // menüdeki "Oyun": fotoğraf bölümündeyken aynı perdeyle dön
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest && e.target.closest('.baglantilar a[href="#oyun"]');
+    if (!a || sade) return;
+    if (donus || window.scrollY >= foto.offsetTop - window.innerHeight * 0.4) { e.preventDefault(); donusBaslat(); }
+  });
 
   // makine seçimi
   function sec(btn) {
