@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Pixelify+Sans:wght@400;600&family=Silkscreen&family=Special+Elite&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/site.css">
+<link rel="stylesheet" href="css/site.css?v=3">
 </head>
 <body data-dunya="kagit">
 <a class="atla" href="#oyun">İçeriğe geç</a>
@@ -36,32 +36,117 @@
     </div>
 
     <svg class="makine" viewBox="0 0 600 900" preserveAspectRatio="xMidYMax meet" aria-hidden="true">
+      <defs>
+        <linearGradient id="g-krom" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#f3f5f7"/><stop offset=".42" stop-color="#a0a6ac"/>
+          <stop offset=".55" stop-color="#e2e5e8"/><stop offset="1" stop-color="#666b71"/>
+        </linearGradient>
+        <linearGradient id="g-krom-yan" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stop-color="#70767c"/><stop offset=".35" stop-color="#eef1f3"/>
+          <stop offset=".6" stop-color="#a4aab0"/><stop offset="1" stop-color="#5d6268"/>
+        </linearGradient>
+        <linearGradient id="g-merdane" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#454545"/><stop offset=".18" stop-color="#1c1c1c"/>
+          <stop offset=".62" stop-color="#070707"/><stop offset="1" stop-color="#262626"/>
+        </linearGradient>
+        <linearGradient id="g-dugme" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stop-color="#0d0d0d"/><stop offset=".4" stop-color="#3c3c3c"/><stop offset="1" stop-color="#0a0a0a"/>
+        </linearGradient>
+        <linearGradient id="g-golge-kagit" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#3a2a1c" stop-opacity="0"/><stop offset="1" stop-color="#3a2a1c" stop-opacity=".22"/>
+        </linearGradient>
+        <radialGradient id="g-govde-isik" cx=".5" cy="0" r=".8">
+          <stop offset="0" stop-color="#fff" stop-opacity=".09"/><stop offset="1" stop-color="#fff" stop-opacity="0"/>
+        </radialGradient>
+        <radialGradient id="g-makara" cx=".5" cy=".5" r=".5">
+          <stop offset=".3" stop-color="#2a2a2a"/><stop offset=".95" stop-color="#101010"/><stop offset="1" stop-color="#050505"/>
+        </radialGradient>
+        <radialGradient id="g-tus" cx=".4" cy=".32" r=".7">
+          <stop offset="0" stop-color="#4b4b4b"/><stop offset=".55" stop-color="#121212"/><stop offset="1" stop-color="#000"/>
+        </radialGradient>
+        <linearGradient id="g-kece" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#3b4733"/><stop offset="1" stop-color="#28311f"/>
+        </linearGradient>
+        <linearGradient id="g-kafa" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#d4d7da"/><stop offset=".5" stop-color="#8f9499"/><stop offset="1" stop-color="#5a5f64"/>
+        </linearGradient>
+      </defs>
       <rect id="kart-zemin" x="-3000" y="-3000" width="6600" height="7000" fill="#13322B" opacity="0"/>
       <g id="sahne-g">
-        <rect id="govde" x="-1200" y="574" width="3000" height="1600" fill="#1f1e1c"/>
+        <rect id="govde" x="-1200" y="500" width="3000" height="1700" fill="#1d1c1a"/>
+        <g id="kece-g" fill="none"></g>
+        <g id="kollar-golge" transform="translate(2.5 3.5)"></g>
         <g id="kollar"></g>
+        <g id="kafalar"></g>
         <g id="akim" fill="none" stroke="#ffd98a" stroke-width="2" stroke-linecap="round" stroke-dasharray="6 80"></g>
         <g id="viyalar"></g>
         <g id="metal">
-          <rect x="-1200" y="560" width="3000" height="15" fill="#8b9095"/>
-          <g id="cetvel" stroke="#3a3c3f" stroke-width="1.2"></g>
-          <path d="M262 498 L284 575" stroke="#7d8186" stroke-width="6" stroke-linecap="round"/>
-          <path d="M338 498 L316 575" stroke="#7d8186" stroke-width="6" stroke-linecap="round"/>
-          <rect x="80" y="578" width="440" height="8" fill="#151413"/>
-          <rect x="80" y="586" width="440" height="8" fill="#a3241c"/>
-          <circle cx="92" cy="586" r="20" fill="#9aa0a6" stroke="#5b5f64" stroke-width="2"/>
-          <circle cx="92" cy="586" r="5" fill="#5b5f64"/>
-          <circle cx="508" cy="586" r="20" fill="#9aa0a6" stroke="#5b5f64" stroke-width="2"/>
-          <circle cx="508" cy="586" r="5" fill="#5b5f64"/>
-          <path d="M280 596 L320 596 L328 642 L272 642 Z" fill="#a7acb1" stroke="#5b5f64" stroke-width="1.5"/>
+          <!-- kâğıda düşen gölge, gövde parıltısı -->
+          <rect x="-1200" y="420" width="3000" height="24" fill="url(#g-golge-kagit)"/>
+          <rect x="-200" y="500" width="1000" height="420" fill="url(#g-govde-isik)"/>
+          <!-- merdane ve topuzları -->
+          <rect x="-60" y="456" width="720" height="40" fill="url(#g-merdane)"/>
+          <rect x="-60" y="462" width="720" height="2" fill="#5a5a5a" opacity=".55"/>
+          <g id="topuzlar">
+            <rect x="-118" y="446" width="58" height="60" rx="10" fill="url(#g-dugme)"/>
+            <rect x="660" y="446" width="58" height="60" rx="10" fill="url(#g-dugme)"/>
+            <g stroke="#000" stroke-width="1.4" opacity=".7">
+              <path d="M-108 449v54M-98 449v54M-88 449v54M-78 449v54M-68 449v54"/>
+              <path d="M668 449v54M678 449v54M688 449v54M698 449v54M708 449v54"/>
+            </g>
+          </g>
+          <!-- kâğıt baskı çubuğu, cetvel ve lastik makaralar -->
+          <rect x="30" y="442" width="540" height="12" rx="3" fill="url(#g-krom)"/>
+          <g id="cetvel" stroke="#3a3c3f" stroke-width="1"></g>
+          <rect x="158" y="438" width="30" height="20" rx="5" fill="#141414"/><rect x="161" y="440" width="24" height="3" rx="1.5" fill="#444"/>
+          <rect x="412" y="438" width="30" height="20" rx="5" fill="#141414"/><rect x="415" y="440" width="24" height="3" rx="1.5" fill="#444"/>
+          <!-- şaryo rayı -->
+          <rect x="-1200" y="496" width="3000" height="8" fill="url(#g-krom)"/>
+          <rect x="-1200" y="504" width="3000" height="3" fill="#000" opacity=".5"/>
+          <!-- kart tutucu parmaklar -->
+          <path d="M268 426 L286 505" stroke="url(#g-krom-yan)" stroke-width="6" stroke-linecap="round"/>
+          <path d="M332 426 L314 505" stroke="url(#g-krom-yan)" stroke-width="6" stroke-linecap="round"/>
+          <!-- şerit: makaralar ve kırmızı-siyah bant -->
+          <g id="makaralar">
+            <circle cx="112" cy="540" r="34" fill="#000" opacity=".35" transform="translate(3 4)"/>
+            <circle cx="112" cy="540" r="34" fill="url(#g-krom)"/>
+            <circle cx="112" cy="540" r="29" fill="url(#g-makara)"/>
+            <circle cx="488" cy="540" r="34" fill="#000" opacity=".35" transform="translate(3 4)"/>
+            <circle cx="488" cy="540" r="34" fill="url(#g-krom)"/>
+            <circle cx="488" cy="540" r="29" fill="url(#g-makara)"/>
+            <g fill="none" stroke="#000" stroke-width=".8" opacity=".8">
+              <circle cx="112" cy="540" r="25"/><circle cx="112" cy="540" r="21"/><circle cx="112" cy="540" r="17"/>
+              <circle cx="488" cy="540" r="24"/><circle cx="488" cy="540" r="19"/>
+            </g>
+            <g fill="none" stroke="#5a1410" stroke-width=".7" opacity=".7">
+              <circle cx="112" cy="540" r="23"/><circle cx="488" cy="540" r="21.5"/>
+            </g>
+            <circle cx="112" cy="540" r="10" fill="url(#g-krom)"/><circle cx="488" cy="540" r="10" fill="url(#g-krom)"/>
+            <g fill="#2a2c2e">
+              <circle cx="112" cy="535" r="1.8"/><circle cx="107.7" cy="542.5" r="1.8"/><circle cx="116.3" cy="542.5" r="1.8"/>
+              <circle cx="488" cy="535" r="1.8"/><circle cx="483.7" cy="542.5" r="1.8"/><circle cx="492.3" cy="542.5" r="1.8"/>
+            </g>
+          </g>
+          <rect x="112" y="522" width="376" height="6" fill="#141312"/>
+          <rect x="112" y="528" width="376" height="6" fill="#a3241c"/>
+          <rect x="112" y="528" width="376" height="1.2" fill="#d2483c" opacity=".6"/>
+          <!-- şerit titreştirici ve yazı noktası -->
+          <path d="M278 516 L322 516 L330 566 L270 566 Z" fill="url(#g-krom-yan)" stroke="#4e5358" stroke-width="1.2"/>
+          <rect x="293" y="522" width="14" height="12" rx="2" fill="#141312"/>
+          <rect x="293" y="528" width="14" height="6" fill="#a3241c"/>
+          <!-- harf kolu yuvası (segment) -->
+          <path id="segment" fill="url(#g-krom)" stroke="#4e5358" stroke-width="1"/>
+          <g id="yuvalar" stroke="#2a2c2e" stroke-width="1.6"></g>
+          <!-- tuşlar: Türkçe F klavye -->
+          <g id="klavye"></g>
         </g>
         <g id="cip" opacity="0">
           <g id="cip-bacak" fill="#c9c2b0"></g>
-          <rect x="266" y="591" width="68" height="68" rx="3" fill="#151515"/>
-          <circle cx="274" cy="599" r="2.5" fill="#3a3a3a"/>
-          <text x="300" y="630" text-anchor="middle" font-family="Silkscreen, monospace" font-size="8" fill="#8f8a80">MLH-01</text>
+          <rect x="266" y="521" width="68" height="68" rx="3" fill="#151515"/>
+          <circle cx="274" cy="529" r="2.5" fill="#3a3a3a"/>
+          <text x="300" y="560" text-anchor="middle" font-family="Silkscreen, monospace" font-size="8" fill="#8f8a80">MLH-01</text>
         </g>
-        <text id="ipucu" x="300" y="470" text-anchor="middle" font-family="Courier Prime, monospace" font-size="15" fill="#76675B">↓ kaydır ya da daktiloya dokun</text>
+        <text id="ipucu" x="300" y="404" text-anchor="middle" font-family="Courier Prime, monospace" font-size="15" fill="#76675B">↓ kaydır ya da daktiloya dokun</text>
       </g>
 
       <g id="cep" opacity="0">
@@ -93,8 +178,12 @@
 </section>
 
 <section id="oyun" aria-labelledby="oyun-baslik">
-  <canvas class="sade-manzara" width="160" height="90" aria-hidden="true"></canvas>
-  <div class="icerik">
+  <!-- geçişin son karesiyle aynı: geçiş bitince sayfa fark ettirmeden buraya atlar -->
+  <div class="oyun-kapak" aria-hidden="true">
+    <canvas width="160" height="90"></canvas>
+    <p class="dunya-baslik">OYUN</p>
+  </div>
+  <div class="icerik oyun-icerik">
     <h2 id="oyun-baslik">Oyun</h2>
     <article class="pano">
       <p class="ust-etiket">Proje 01 · devam ediyor</p>
@@ -126,6 +215,6 @@
   <p>Bu sayfa bir denemedir. Kahve henüz dökülmedi.</p>
 </footer>
 
-<script src="js/gecis.js"></script>
+<script src="js/gecis.js?v=3"></script>
 </body>
 </html>
