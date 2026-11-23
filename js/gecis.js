@@ -194,7 +194,7 @@
     if (yazildi) return;
     if (si >= satirlar.length) {
       yazildi = true;
-      setTimeout(function () { sonBos = true; kagitHedef = -(satirlar.length + SON_BOSLUK) * LH; }, 380);
+      setTimeout(function () { sonBos = true; kagitHedef = -(satirlar.length + SON_BOSLUK) * LH; }, 300);
       return;
     }
     var s = satirlar[si];
@@ -205,34 +205,34 @@
     if (hi >= metinler[si].length) {
       s.classList.remove('imlec'); si++; hi = 0;
       // satır sonu: kâğıt bir satır yukarı kayar (satır başı kolu)
-      setTimeout(function () { if (!yazildi) kagitHedef -= LH; setTimeout(yaz, 260); }, 160);
-    } else setTimeout(yaz, 45 + Math.random() * 60);
+      setTimeout(function () { if (!yazildi) kagitHedef -= LH; setTimeout(yaz, 190); }, 120);
+    } else setTimeout(yaz, 34 + Math.random() * 44 + (harf === ',' ? 60 : 0));   // satır ortasındaki virgülden sonra kısa duraklama
   }
 
   // ---------- çizim: p (0..1) geçişin neresinde olduğumuzu söyler ----------
   function ciz(p, zaman) {
     // 0) kâğıt yukarı kayıp çıkar; daktilo yerinde kalır
-    var cikis = -sahne.clientHeight * 1.05 * yum(ara(p, 0, 0.2));
+    var cikis = -sahne.clientHeight * 1.05 * yum(ara(p, 0, 0.12));
     var kay = kagitY + cikis;
     yazi.style.transform = 'translate(-50%,' + kay.toFixed(1) + 'px)';
     sahne.style.backgroundPosition = '0 ' + kay.toFixed(1) + 'px';
-    ipucu.setAttribute('opacity', (ipucuA * (1 - ara(p, 0, 0.06))).toFixed(3));
+    ipucu.setAttribute('opacity', (ipucuA * (1 - ara(p, 0, 0.04))).toFixed(3));
 
     // 1) yaklaş: bakış harf kollarına iner
-    var z = yum(ara(p, 0.16, 0.45));
+    var z = yum(ara(p, 0.06, 0.32));
     var s = 1 + 1.25 * z;
     var ty = lerp(C.y, 450, z);
     sahneG.setAttribute('transform', 'translate(300 ' + ty + ') scale(' + s + ') translate(' + (-C.x) + ' ' + (-C.y) + ')');
 
     // tuş vuruşu: geçişte ortadaki kol bir kez kalkar
-    var vur = Math.sin(Math.PI * ara(p, 0.2, 0.28));
-    var tusVur = 0.3 * Math.sin(Math.PI * kis((zaman - vurZaman) / 110));
+    var vur = Math.sin(Math.PI * ara(p, 0.09, 0.15));
+    var tusVur = 0.3 * Math.sin(Math.PI * kis((zaman - vurZaman) / 90));
 
     // 2) metal → bakır yol
-    var t = yum(ara(p, 0.33, 0.56));
+    var t = yum(ara(p, 0.16, 0.34));
     govde.setAttribute('fill', renk('#1d1c1a', '#13322B', t));
     kartZemin.setAttribute('opacity', t);
-    var metalO = 1 - ara(p, 0.3, 0.46);
+    var metalO = 1 - ara(p, 0.15, 0.28);
     metal.setAttribute('opacity', metalO);
     kafaG.setAttribute('opacity', metalO);
     keceG.setAttribute('opacity', metalO);
@@ -262,20 +262,20 @@
       }
       if (t > 0.98) k.akim.setAttribute('d', d);
     }
-    viyaG.setAttribute('opacity', ara(p, 0.5, 0.58));
-    akimG.setAttribute('opacity', ara(p, 0.55, 0.62) * (1 - ara(p, 0.8, 0.9)));
+    viyaG.setAttribute('opacity', ara(p, 0.32, 0.38));
+    akimG.setAttribute('opacity', ara(p, 0.36, 0.42) * (1 - ara(p, 0.8, 0.88)));
     akimG.style.strokeDashoffset = (-(zaman * 0.08) % 86).toFixed(1);
 
     // 3) çip belirir
-    cip.setAttribute('opacity', ara(p, 0.48, 0.58));
+    cip.setAttribute('opacity', ara(p, 0.28, 0.37));
 
     // 4) cep konsolu
-    cep.setAttribute('opacity', yum(ara(p, 0.6, 0.7)));
+    cep.setAttribute('opacity', yum(ara(p, 0.4, 0.49)));
     ekranYazi.setAttribute('opacity', (zaman % 1000) < 650 ? 1 : 0.25);
 
     // 5) piksel dünyası ekrandan taşar
-    var gor = ara(p, 0.72, 0.78);
-    var e = yum(ara(p, 0.8, 0.97));
+    var gor = ara(p, 0.8, 0.83);
+    var e = yum(ara(p, 0.82, 0.97));
     dunya.style.opacity = gor;
     if (gor > 0) {
       var sr = sahne.getBoundingClientRect(), er = ekran.getBoundingClientRect();
@@ -371,8 +371,8 @@
         else { durum = 'bekle'; kilitle(false); }
       }
     }
-    kagitY += (kagitHedef - kagitY) * Math.min(1, dt * 11);
-    ipucuA += ((yazildi ? 1 : 0) - ipucuA) * Math.min(1, dt * 3);
+    kagitY += (kagitHedef - kagitY) * (1 - Math.exp(-14 * dt));
+    ipucuA += ((yazildi ? 1 : 0) - ipucuA) * (1 - Math.exp(-3 * dt));
     if (!sade && window.scrollY < window.innerHeight * 1.2) ciz(pv, zaman);
     mod();
     requestAnimationFrame(kare);
@@ -383,7 +383,7 @@
     if (y >= foto.offsetTop - h * 0.4) ad = foto.dataset.dunya || 'kagit';
     else if (y >= oyun.offsetTop - h * 0.5) ad = 'piksel';
     else if (sade) ad = 'kagit';
-    else ad = pv > 0.85 ? 'piksel' : pv > 0.38 ? 'devre' : 'kagit';
+    else ad = pv > 0.82 ? 'piksel' : pv > 0.25 ? 'devre' : 'kagit';
     if (document.body.dataset.dunya !== ad) document.body.dataset.dunya = ad;
   }
 
@@ -402,7 +402,7 @@
       window.scrollTo(0, hash === foto && window.fotoSonY ? window.fotoSonY() : hash.offsetTop);
     } else {
       window.scrollTo(0, hash && sade ? hash.offsetTop : 0);
-      if (!sade) setTimeout(yaz, 500);
+      if (!sade) setTimeout(yaz, 400);
     }
     requestAnimationFrame(kare);
   }
