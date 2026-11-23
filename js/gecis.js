@@ -380,7 +380,7 @@
 
   function mod() {
     var y = window.scrollY, h = window.innerHeight, ad;
-    if (y >= foto.offsetTop - h * 0.4) ad = 'kagit';
+    if (y >= foto.offsetTop - h * 0.4) ad = foto.dataset.dunya || 'kagit';
     else if (y >= oyun.offsetTop - h * 0.5) ad = 'piksel';
     else if (sade) ad = 'kagit';
     else ad = pv > 0.85 ? 'piksel' : pv > 0.38 ? 'devre' : 'kagit';
@@ -399,7 +399,7 @@
     olc();
     if (hash && hash !== giris && !sade) {
       anindaBitir(); olc();
-      window.scrollTo(0, hash.offsetTop);
+      window.scrollTo(0, hash === foto && window.fotoSonY ? window.fotoSonY() : hash.offsetTop);
     } else {
       window.scrollTo(0, hash && sade ? hash.offsetTop : 0);
       if (!sade) setTimeout(yaz, 500);

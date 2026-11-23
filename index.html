@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Pixelify+Sans:wght@400;600&family=Silkscreen&family=Special+Elite&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/site.css?v=3">
+<link rel="stylesheet" href="css/site.css?v=4">
 </head>
 <body data-dunya="kagit">
 <a class="atla" href="#oyun">İçeriğe geç</a>
@@ -20,7 +20,7 @@
   </div>
   <div class="baglantilar">
     <a href="#oyun">Oyun</a>
-    <a href="#dijital">Fotoğraf</a>
+    <a href="#foto">Fotoğraf</a>
   </div>
 </nav>
 
@@ -203,18 +203,151 @@
   </div>
 </section>
 
-<section id="dijital" aria-labelledby="dijital-baslik">
-  <div class="icerik">
-    <h2 id="dijital-baslik">Dijital fotoğraf</h2>
-    <p>Buraya dijital makine geçişi gelecek. Sonra analog fotoğraf, film makinesiyle.</p>
+<section id="foto" aria-labelledby="foto-baslik">
+  <div class="foto-sahne">
+    <h2 id="foto-baslik" class="gizli">Fotoğraf</h2>
+
+    <!-- vizörden görünen: odak ekranı, ölçüm ibresi, enstantane çizelgesi -->
+    <div class="vizor" aria-hidden="true">
+      <div class="vizor-sahne"></div>
+      <div class="vizor-odak"><span></span></div>
+      <div class="vizor-kose"></div>
+      <div class="vizor-olcum"><i>+</i><b></b><i>–</i></div>
+      <p class="vizor-hiz"><span>1000</span><span>500</span><span>250</span><span class="secili">125</span><span>60</span><span>30</span><span>15</span></p>
+    </div>
+
+    <div class="galeri" id="galeri" aria-live="polite">
+      <p class="galeri-ipucu">Bir makine seç. <span>Film mi, sensör mü?</span></p>
+
+      <div class="galeri-bolum" id="galeri-dijital" hidden>
+        <h3>Dijital</h3>
+        <div class="suzgec" role="group" aria-label="Konuya göre süz">
+          <button type="button" aria-pressed="true" data-tur="hepsi">Hepsi</button>
+          <button type="button" aria-pressed="false" data-tur="gezi">Gezi</button>
+          <button type="button" aria-pressed="false" data-tur="sokak">Sokak</button>
+          <button type="button" aria-pressed="false" data-tur="portre">Portre</button>
+        </div>
+        <!--
+          Yeni fotoğraf: görseli gorseller/dijital/ klasörüne koy, aşağıya bir <figure> ekle.
+          <figure data-tur="sokak"><img src="gorseller/dijital/kadikoy.webp" alt="Ne görünüyor, kısaca" loading="lazy"><figcaption>Kadıköy, 2025</figcaption></figure>
+        -->
+        <div class="dijital-izgara">
+          <figure data-tur="gezi" class="yer-tutucu"><div></div><figcaption>gezi · 01</figcaption></figure>
+          <figure data-tur="sokak" class="yer-tutucu"><div></div><figcaption>sokak · 01</figcaption></figure>
+          <figure data-tur="portre" class="yer-tutucu"><div></div><figcaption>portre · 01</figcaption></figure>
+          <figure data-tur="gezi" class="yer-tutucu"><div></div><figcaption>gezi · 02</figcaption></figure>
+          <figure data-tur="sokak" class="yer-tutucu"><div></div><figcaption>sokak · 02</figcaption></figure>
+          <figure data-tur="portre" class="yer-tutucu"><div></div><figcaption>portre · 02</figcaption></figure>
+        </div>
+      </div>
+
+      <div class="galeri-bolum" id="galeri-analog" hidden>
+        <h3>Analog</h3>
+        <p class="galeri-not">Henüz taranmış rulo yok. İlki banyoda.</p>
+        <!--
+          Yeni kare: taranmış görseli gorseller/analog/ klasörüne koy, aşağıdaki bir boş kareyi şununla değiştir:
+          <figure><img src="gorseller/analog/rulo1-07.webp" alt="Ne görünüyor, kısaca" loading="lazy"><figcaption>7</figcaption></figure>
+        -->
+        <div class="film-seridi">
+          <figure class="bos-kare"><div></div><figcaption>1</figcaption></figure>
+          <figure class="bos-kare"><div></div><figcaption>2</figcaption></figure>
+          <figure class="bos-kare"><div></div><figcaption>3</figcaption></figure>
+          <figure class="bos-kare"><div></div><figcaption>4</figcaption></figure>
+          <figure class="bos-kare"><div></div><figcaption>5</figcaption></figure>
+          <figure class="bos-kare"><div></div><figcaption>6</figcaption></figure>
+        </div>
+      </div>
+    </div>
+
+    <!-- analog film makinesi, arkadan -->
+    <button class="kamera analog" type="button" aria-pressed="false" aria-controls="galeri" data-galeri="galeri-analog">
+      <svg viewBox="0 0 400 250" aria-hidden="true">
+        <defs>
+          <linearGradient id="k-krom" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#f1f3f5"/><stop offset=".45" stop-color="#a7adb3"/><stop offset=".6" stop-color="#dfe2e5"/><stop offset="1" stop-color="#777d83"/>
+          </linearGradient>
+          <pattern id="k-deri" width="5" height="5" patternUnits="userSpaceOnUse">
+            <rect width="5" height="5" fill="#1b1a19"/><circle cx="1.5" cy="1.5" r=".9" fill="#2b2927"/><circle cx="4" cy="3.8" r=".7" fill="#0f0e0d"/>
+          </pattern>
+          <radialGradient id="k-cam" cx=".35" cy=".3" r=".9">
+            <stop offset="0" stop-color="#3a4a52"/><stop offset=".6" stop-color="#0d1215"/><stop offset="1" stop-color="#050607"/>
+          </radialGradient>
+        </defs>
+        <ellipse cx="200" cy="238" rx="175" ry="9" fill="#000" opacity=".25"/>
+        <!-- prizma tepesi -->
+        <path d="M150 62 L166 22 L234 22 L250 62 Z" fill="url(#k-krom)" stroke="#5e6369" stroke-width="1.2"/>
+        <path d="M170 28 L230 28 L240 56 L160 56 Z" fill="#1b1a19"/>
+        <!-- gövde -->
+        <rect x="18" y="58" width="364" height="172" rx="16" fill="url(#k-deri)"/>
+        <path d="M34 58 H366 Q382 58 382 74 V108 H18 V74 Q18 58 34 58 Z" fill="url(#k-krom)" stroke="#5e6369" stroke-width="1"/>
+        <rect x="18" y="106" width="364" height="3" fill="#000" opacity=".35"/>
+        <!-- geri sarma kolu, enstantane kadranı, kurma kolu, deklanşör -->
+        <circle cx="76" cy="54" r="24" fill="url(#k-krom)" stroke="#5e6369"/>
+        <circle cx="76" cy="54" r="15" fill="#2a2a2a"/><path d="M76 54 L98 44" stroke="#c9cdd1" stroke-width="5" stroke-linecap="round"/>
+        <circle cx="300" cy="52" r="22" fill="#2a2a2a" stroke="#5e6369"/>
+        <g fill="#e9e4d8" font-family="Courier Prime, monospace" font-size="7" text-anchor="middle">
+          <text x="300" y="38">125</text><text x="314" y="50">60</text><text x="286" y="50">250</text><text x="300" y="66">B</text>
+        </g>
+        <circle cx="300" cy="52" r="5" fill="url(#k-krom)"/>
+        <path d="M322 64 Q350 50 372 62" stroke="url(#k-krom)" stroke-width="9" fill="none" stroke-linecap="round"/>
+        <circle cx="340" cy="44" r="7" fill="url(#k-krom)" stroke="#5e6369"/>
+        <!-- vizör lastiği ve camı -->
+        <rect x="164" y="60" width="72" height="52" rx="10" fill="#0c0c0c" stroke="#262626" stroke-width="2"/>
+        <rect class="vizor-cam" x="180" y="72" width="40" height="28" rx="3" fill="url(#k-cam)"/>
+        <path d="M184 76 L196 76 L186 90 Z" fill="#fff" opacity=".18"/>
+        <!-- arka kapak: film hatırlatıcı, kapak çizgisi -->
+        <path d="M40 120 H360" stroke="#000" stroke-width="1.4" opacity=".6"/>
+        <rect x="56" y="140" width="76" height="46" rx="3" fill="#8c9196" stroke="#5e6369"/>
+        <rect x="62" y="146" width="64" height="34" rx="2" fill="#efe6d2"/>
+        <text x="94" y="161" text-anchor="middle" font-family="Courier Prime, monospace" font-size="9" fill="#a3241c" font-weight="700">ISO 400</text>
+        <text x="94" y="174" text-anchor="middle" font-family="Courier Prime, monospace" font-size="8" fill="#40312F">36 poz · s/b</text>
+        <rect x="340" y="140" width="10" height="44" rx="3" fill="url(#k-krom)"/>
+        <rect x="8" y="80" width="12" height="18" rx="3" fill="url(#k-krom)"/><rect x="380" y="80" width="12" height="18" rx="3" fill="url(#k-krom)"/>
+      </svg>
+      <span class="kamera-ad">Analog <small>film</small></span>
+    </button>
+
+    <!-- dijital makine, arkadan -->
+    <button class="kamera dijital" type="button" aria-pressed="false" aria-controls="galeri" data-galeri="galeri-dijital">
+      <svg viewBox="0 0 400 250" aria-hidden="true">
+        <defs>
+          <linearGradient id="d-govde" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#4a4d50"/><stop offset=".15" stop-color="#2c2e30"/><stop offset="1" stop-color="#18191a"/>
+          </linearGradient>
+          <linearGradient id="d-ekran" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#36492E"/><stop offset=".55" stop-color="#13322B"/><stop offset="1" stop-color="#0b1a16"/>
+          </linearGradient>
+        </defs>
+        <ellipse cx="200" cy="238" rx="175" ry="9" fill="#000" opacity=".25"/>
+        <rect x="18" y="44" width="364" height="186" rx="24" fill="url(#d-govde)" stroke="#0e0f10" stroke-width="2"/>
+        <rect x="296" y="30" width="62" height="20" rx="8" fill="#2f3133"/>
+        <circle cx="282" cy="40" r="9" fill="#a3241c"/>
+        <rect x="40" y="58" width="58" height="40" rx="8" fill="#0b0b0b" stroke="#333" stroke-width="2"/>
+        <rect x="52" y="68" width="34" height="20" rx="3" fill="#1d262a"/>
+        <!-- ekran -->
+        <rect x="40" y="108" width="206" height="110" rx="8" fill="#0a0a0a"/>
+        <rect x="48" y="115" width="190" height="96" rx="4" fill="url(#d-ekran)"/>
+        <path d="M58 200 L110 150 L140 178 L168 156 L226 200 Z" fill="#F5EAD5" opacity=".22"/>
+        <circle cx="200" cy="138" r="10" fill="#F5EAD5" opacity=".3"/>
+        <path d="M137 151 L137 177 L159 164 Z" fill="#F5EAD5" opacity=".85"/>
+        <text x="56" y="128" font-family="Courier Prime, monospace" font-size="9" fill="#F5EAD5" opacity=".7">▶ 1/20</text>
+        <!-- düğmeler ve kadran -->
+        <circle cx="318" cy="150" r="34" fill="#232527" stroke="#0e0f10" stroke-width="2"/>
+        <circle cx="318" cy="150" r="13" fill="#3a3d40"/>
+        <g fill="#8b8f93"><circle cx="318" cy="126" r="3"/><circle cx="318" cy="174" r="3"/><circle cx="294" cy="150" r="3"/><circle cx="342" cy="150" r="3"/></g>
+        <rect x="276" y="198" width="30" height="12" rx="6" fill="#3a3d40"/><rect x="314" y="198" width="30" height="12" rx="6" fill="#3a3d40"/>
+        <rect x="280" y="68" width="26" height="14" rx="7" fill="#3a3d40"/><rect x="314" y="68" width="40" height="14" rx="7" fill="#3a3d40"/>
+        <rect x="8" y="80" width="12" height="18" rx="3" fill="#55595d"/><rect x="380" y="80" width="12" height="18" rx="3" fill="#55595d"/>
+      </svg>
+      <span class="kamera-ad">Dijital <small>sensör</small></span>
+    </button>
+
+    <p class="son-not">© 2026 Melih · bu sayfa burada biter. Kahve hâlâ dökülmedi.</p>
   </div>
 </section>
 </main>
 
-<footer class="alt">
-  <p>Bu sayfa bir denemedir. Kahve henüz dökülmedi.</p>
-</footer>
-
-<script src="js/gecis.js?v=3"></script>
+<script src="js/gecis.js?v=4"></script>
+<script src="js/foto.js?v=4"></script>
 </body>
 </html>
