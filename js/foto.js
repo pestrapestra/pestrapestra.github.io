@@ -1,6 +1,8 @@
 // Fotoğraf bölümü: vizörden bakılır → kafa geri çekilir, analog makinenin arkası görünür →
 // makine biraz büyür → sol alta iner; altında dijital makine bekler. Tıklanan makinenin fotoğrafları açılır.
 // Kaydırma ilerlemesi q (0..1) her şeyi sürer; bölüm sayfanın sonu.
+// Vizör geçildikten sonra yukarı kaydırma kamera bölümünde doğal akar (animasyon geri oynar, vizör yine gelmez);
+// perdeli dönüş yalnız sınırda (q = Q_DON) bilinçli ekstra itişle başlar.
 (function () {
   'use strict';
   var sade = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -24,6 +26,23 @@
   // vizör camının makine çizimindeki yeri (viewBox 400 x 250)
   var CAM = { x: 200, y: 86, w: 40, h: 28 };
 
+  var SINIR_TOL = 2;        // sınırda sayılma payı (px)
+  var DON_ITIS = 150;       // sınırdayken dönüşü başlatan yukarı tekerlek toplamı (px)
+  var DON_PARMAK = 70;      // sınırdayken dönüşü başlatan parmak yolu (px)
+  var SINIR_BEKLE = 350;    // sınıra varıştan sonra yukarı itiş sayılmaz (ms): aynı kaydırma akışı dönüşü tetiklemesin
+  var DON_KOPUK = 0.08;     // sınırın bu kadar üstüne atlanırsa (çubuk sürükleme, büyük fırlatma) doğrudan dönülür
+  var sinirVaris = -1e9, sinirdaydi = false;
+
+  // vizörün söndüğü kaydırma konumu (belge başından)
+  function sinirY() { return foto.getBoundingClientRect().top + window.scrollY + Q_DON * (foto.offsetHeight - window.innerHeight); }
+  function sinirdaMi() { return window.scrollY <= sinirY() + SINIR_TOL; }
+  // sınıra varış anını yakalar (yukarıdan sınıra geçiş)
+  function sinirGuncelle() {
+    var s = yerlesti && sinirdaMi();
+    if (s && !sinirdaydi) sinirVaris = performance.now();
+    sinirdaydi = s;
+    return s;
+  }
   function sonY() { return foto.offsetTop + foto.offsetHeight - window.innerHeight; }
   window.fotoSonY = sonY;
 
@@ -83,7 +102,11 @@
     onceki = zaman;
     if (!sade && !donus) {
       if (qHedef >= Q_DON) yerlesti = true;
-      else if (yerlesti) donusBaslat();   // yedek: kaydırma çubuğuyla sürüklenerek vizör bölgesine inildi
+      else if (yerlesti) {
+        if (qHedef < Q_DON - DON_KOPUK) donusBaslat();   // sınırdan çok uzağa çıkıldı (çubuk sürükleme / büyük fırlatma)
+        else if (window.scrollY < sinirY() - 1) window.scrollTo({ top: sinirY(), left: 0, behavior: 'instant' });   // sınırda tut: atalet taşmasın
+      }
+      sinirGuncelle();
     }
     if (dt > 0.25 || !gorunur) qg = qHedef;
     else {
@@ -101,7 +124,7 @@
 
   // ---------- fotoğraftan yukarı: oyun renginde perde iner, sayfa oyun içeriğine atlar, perde söner ----------
   var perde = document.querySelector('.donus-perde');
-  var galeriKaydi = -1e9, negToplam = 0, negZaman = -1e9, dokunY = null, dokunGaleri = false;
+  var galeriKaydi = -1e9, negToplam = 0, negZaman = -1e9, dokunY = null, dokunSon = 0, dokunGaleri = false;
   galeri.addEventListener('scroll', function () { galeriKaydi = performance.now(); }, { passive: true });
 
   function donusBaslat() {
@@ -146,23 +169,35 @@
     var dy = e.deltaY * (e.deltaMode === 1 ? 16 : e.deltaMode === 2 ? window.innerHeight : 1);
     if (dy >= 0) return;
     if (galeriIciKaydirmali(e.target)) return;   // galeri kendi kayar
+    if (!sinirGuncelle()) {   // sınırın üstü: sayfa doğal kayar, kamera geri oynar
+      negToplam = 0;
+      var sy = sinirY();
+      if (window.scrollY + dy < sy - 1) { e.preventDefault(); window.scrollTo({ top: sy, left: 0, behavior: 'smooth' }); }   // büyük adım sınırı aşmasın
+      return;
+    }
     e.preventDefault();
     var simdi = performance.now();
+    if (simdi - sinirVaris < SINIR_BEKLE) { negToplam = 0; return; }   // sınıra varan akışın artığı sayılmaz
     if (simdi - galeriKaydi < 300) return;       // galeri tepeye vurduktan sonra süren atalet sayfayı fırlatmasın
     if (simdi - negZaman > 300) negToplam = 0;
     negZaman = simdi; negToplam += dy;
-    if (negToplam <= -20) { negToplam = 0; donusBaslat(); }
+    if (negToplam <= -DON_ITIS) { negToplam = 0; donusBaslat(); }
   }, { passive: false });
 
   window.addEventListener('touchstart', function (e) {
-    dokunY = e.touches[0].clientY;
+    dokunY = dokunSon = e.touches[0].clientY;
     dokunGaleri = galeriIciKaydirmali(e.target);
   }, { passive: true });
   window.addEventListener('touchmove', function (e) {
     if (sade) return;
     if (donus) { e.preventDefault(); return; }
     if (!yerlesti || dokunY === null || dokunGaleri) return;
-    if (dokunY - e.touches[0].clientY <= -12) { e.preventDefault(); dokunY = null; donusBaslat(); }   // parmak aşağı: sayfa yukarı
+    var y = e.touches[0].clientY, asagi = y > dokunSon;
+    dokunSon = y;
+    if (!sinirGuncelle()) { dokunY = y; return; }       // sınırın üstü: doğal kayar; sınıra varılınca yol buradan sayılır
+    if (!asagi) { if (y < dokunY) dokunY = y; return; } // parmak yukarı (sayfa aşağı) serbest
+    e.preventDefault();
+    if (y - dokunY >= DON_PARMAK) { dokunY = null; donusBaslat(); }   // parmak aşağı: sayfa yukarı
   }, { passive: false });
 
   window.addEventListener('keydown', function (e) {
@@ -176,7 +211,11 @@
     if (h && h.closest && h.closest('input, textarea, select')) return;
     if (bosluk && h && h.closest && h.closest('a, button')) return;
     if (galeriIciKaydirmali(h)) return;
-    e.preventDefault(); donusBaslat();
+    e.preventDefault();
+    if (e.key === 'Home' || sinirGuncelle()) { donusBaslat(); return; }
+    // sınırın üstü: kamerayı geri oynatacak kadar kaydır, sınırda dur
+    var adim = e.key === 'ArrowUp' ? 80 : window.innerHeight * 0.85;
+    window.scrollTo({ top: Math.max(sinirY(), window.scrollY - adim), behavior: 'smooth' });
   });
 
   // menüdeki "Oyun": fotoğraf bölümündeyken aynı perdeyle dön

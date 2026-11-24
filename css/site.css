@@ -272,7 +272,7 @@ body[data-dunya="karanlik"] .ust a { color: var(--kagit-golge); }
 
 .galeri {
   position: absolute; z-index: 3; top: 104px; bottom: 6vh; right: 4vw; left: calc(8vw + min(24vw, 290px));
-  overflow: auto; overscroll-behavior: contain; opacity: var(--galeri-o);
+  overflow: auto; overscroll-behavior: auto; opacity: var(--galeri-o);   /* tepede yukarı kaydırma sayfaya geçsin: kamera geri oynar */
 }
 .galeri-ipucu {
   margin: 18vh 0 0; font-family: 'Special Elite', monospace; font-size: clamp(24px, 3.2vw, 36px); color: var(--baslik);
